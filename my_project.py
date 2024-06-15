@@ -33,7 +33,8 @@ class data_create():
         if self.Age_column in self.dataset.columns:
             self.x_age = self.dataset[self.Age_column].apply(pd.to_numeric,errors = 'coerce').fillna(-1).astype(int)
         if self.Income_column in self.dataset.columns:
-            self.x_income = self.dataset[self.Income_column]
+            self.x_income = self.dataset[self.Income_column].astype(str)
+
         if self.Region_column in self.dataset.columns:
             self.x_region = self.dataset[self.Region_column]
         if self.Ethnic_column in self.dataset.columns:
@@ -48,7 +49,8 @@ class data_create():
         #  print("Required columns 'Status' and 'GENDER' not found in the dataset.")
         #  return
 
-    def status(self):
+class gender(data_create):
+    def gender_data(self):
 
         self.data_columns()
         gender_counter_male = 0
@@ -70,9 +72,11 @@ class data_create():
         print()
 
 
+
+
 class age_data(data_create):
 
-    def age(self):
+    def age_data(self):
         self.data_columns()
         age_18_24 = 0
         age_25_34 = 0
@@ -127,7 +131,7 @@ class ethnic_data(data_create):
             if self.Hispanic_column in self.dataset.columns:
                 self.x_hisp = self.dataset[self.Hispanic_column]'''
 
-    def ethnic(self):
+    def ethnic_data(self):
         self.data_columns()
 
         #ethnicVariable
@@ -171,57 +175,121 @@ class ethnic_data(data_create):
 
         print('White : ', White)
         print('AA : ', AA)
-        print('Asian : ', Asian)
         print('Hispanic :', Hispanic)
+        print('Asian : ', Asian)
         print('Other : ', Other)
 
         print('Total Ethnic count is ' ,White + AA + Asian + Hispanic + Other)
         print()
 
 
+class Income(data_create):
+
+    def income_data(self):
+        self.data_columns()
+
+        inc_25000_less = 0
+        inc_25000_49000 = 0
+        inc_50000_74999 = 0
+        inc_75000_99999 = 0
+        inc_100000_199999 = 0
+        inc__200000 = 0
+
+        for i in range(len(self.dataset)):
+            status = self.x_status.iloc[i]
+            income = self.x_income.iloc[i]
+
+            if status == 'Completed':
+                if (income == 'Less than $14,999' or income == 'Less than $5,000' or income == '$15,000 to $19,999'
+                        or income == '$20,000 to $24,999'):
+                    inc_25000_less += 1
+
+                if (income == '$25,000 to $29,999' or income == '$30,000 to $34,999' or income == '$35,000 to $39,999'
+                        or income == '$35,000 to $39,999' or income == '$40,000 to $44,999' or income == '$45,000 to $49,999'):
+                    inc_25000_49000 += 1
+
+                if (income == '$50,000 to $54,999' or income == '$55,000 to $59,999' or income == '$60,000 to $64,999'
+                        or income == '$65,000 to $69,999' or income == '$70,000 to $74,999'):
+                    inc_50000_74999 += 1
+
+                if (income == '$75,000 to $79,999' or income == '$80,000 to $84,999' or income == '$85,000 to $89,999'
+                        or income == '$90,000 to $94,999' or income == '$95,000 to $99,999'):
+                    inc_75000_99999 += 1
+
+                if (
+                        income == '$100,000 to $124,999' or income == '$125,000 to $149,999' or income == '$150,000 to $174,999'
+                        or income == '$175,000 to $199,999'):
+                    inc_100000_199999 += 1
+
+                if (income == '$200,000 to $249,999' or income == '$250,000 and above'):
+                    inc__200000 += 1
+
+        print('inc_25000_less : ',  inc_25000_less)
+        print('inc_25000_49000 : ',inc_25000_49000)
+        print('inc_50000_74999 : ', inc_50000_74999 )
+        print('inc_75000_99999 : ', inc_75000_99999 )
+        print('inc_100000_199999 : ', inc_100000_199999  )
+        print('inc__200000 : ', inc__200000)
+        total = (inc_25000_less + inc_25000_49000 + inc_50000_74999+ inc_75000_99999+ inc_100000_199999 + inc__200000)
+        print('Total income count is ',total )
+        print()
+
+
+
+class region(data_create):
+
+    def region_data(self):
+        self.data_columns()
+
+        West = 0
+        Midwest = 0
+        South = 0
+        Northeast = 0
+
+        for i in range(len(self.dataset)):
+            status = self.x_status.iloc[i]
+            region = self.x_region.iloc[i]
+
+            if status == 'Completed':
+                if region == 'South':
+                    South +=1
+                if region == 'Midwest':
+                    Midwest +=1
+                if region == 'West':
+                    West +=1
+                if region == 'Northeast':
+                    Northeast +=1
+
+        print('Northeast : ', Northeast)
+        print('Midwest : ', Midwest)
+        print('South : ', South)
+        print('West : ', West)
+        print('Total region counts ', Northeast+Midwest+South+West)
 
 
 
 
+Input = r"C:\Users\prabi\Downloads\Main__Question_Report_Job_1717766797636.csv"
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Input = r"C:\Users\prabi\Downloads\Question_Report_Job_1717766797636.csv"
-
-gender = data_create(Input)
-gender.status()
+gender = gender(Input)
+gender.gender_data()
 
 age = age_data(Input)
-age.age()
+age.age_data()
 
 ethnic = ethnic_data(Input)
-ethnic.ethnic()
+ethnic.ethnic_data()
+
+
+Income = Income(Input)
+Income.income_data()
+
+
+Region = region(Input)
+Region.region_data()
 
 
 
