@@ -1,5 +1,5 @@
-***to provide demographic fallout counts per each demos like age, gender, regio, income, ethnicity, race -  who completed the survey successfully***
-######Takes InPut as a CSV file###
+To provide demographic fallout counts per each demos like age, gender, regio, income, ethnicity, race -  who completed the survey successfully***
+######Takes Input as a CSV file###
 
 
 # Automated Data Preparation Workflow
